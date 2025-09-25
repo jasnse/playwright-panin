@@ -100,6 +100,6 @@ test('Positive case 3 - Log out', async ({ page }) => {
   await logout.waitFor
   await logout.click();
 
-    await expect(page).toHaveURL('https://panin-ccpl-site.skyworx.co.id/app/pengajuan-awal');
+    await expect(page).toHaveURL('https://panin-ccpl-site.skyworx.co.id/');
 
 });
