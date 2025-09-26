@@ -28,6 +28,7 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://localhost:3000',
     headless: false, // 👈 jalankan dengan browser UI
+    ignoreHTTPSErrors: true,
     launchOptions: {
       slowMo: 500,    // 👈 jeda 500ms setiap aksi (klik, fill, dll)
     },
