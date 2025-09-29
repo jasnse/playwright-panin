@@ -2,6 +2,28 @@ import { test, expect } from '@playwright/test';
 
 const path = require('path');
 
+async function clickIfExists(locator: import('@playwright/test').Locator) {
+  if (await locator.count() > 0) {
+    await locator.click();
+  }
+}
+
+async function fillIfExists(locator: import('@playwright/test').Locator, value: string) {
+  if (await locator.count() > 0) {
+    await locator.fill(value);
+  }
+}
+
+async function checkCheckboxIfNotChecked(locator: import('@playwright/test').Locator) {
+  if (await locator.count() > 0) {          // Cek apakah element ada
+    if (!(await locator.isChecked())) {     // Cek apakah belum dicentang
+      await locator.check();                // Centang
+    }
+    // Kalau sudah dicentang, otomatis dilewati
+  }
+}
+
+
 test('data Entry', async ({page}) => {
 
 const username_field = page.locator("//input[@id='userName']")
@@ -25,105 +47,108 @@ await page.goto('https://panin-ccpl-sites.skyworx.co.id/');
   await button.click();
 
   await page.locator("//button[h2[text()='Data Pengajuan']]").click();
-  await page.locator("(//button[@aria-label='edit'])[1]").click();
+  //await page.locator("(//button[@aria-label='edit'])[1]").click();
+const editButton = page.locator("(//button[@aria-label='edit'])[1]");
+await editButton.scrollIntoViewIfNeeded();
+await editButton.click();
 
   //Data Sales
   await page.locator("//button[span[text()='Simpan']]").click();
   await page.locator("//button[normalize-space()='OK']").click();
 
   //Data Pemohon
-  await page.locator("//div[p[text()='-- Select Pengiriman Kartu --']]").click();
+  await clickIfExists(page.locator("//div[p[text()='-- Select Pengiriman Kartu --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='Alamat KTP']").click();
-  await page.locator("//div[p[text()='-- Select Fasilitas E-Statement --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='Alamat KTP']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Fasilitas E-Statement --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='Ya']").click();
-  await page.locator("//div[p[text()='-- Select Kewarganegaraan --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='Ya']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kewarganegaraan --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='Indonesia']").click();
-  await page.locator("//input[@type='text' and @name='npwp']").fill("3000167645389028");
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='Indonesia']"))
+  await fillIfExists(page.locator("//input[@type='text' and @name='npwp']"), "3000167645389028");
 
-  await page.locator("//textarea[@name='id_address']").fill("Jl. Tomang Raya Selatan no 12B");
-  await page.locator("//input[@name='id_rt']").fill("008");
-  await page.locator("//input[@name='id_rt']").fill("012");
-  await page.locator("//div[p[text()='-- Select Provinsi E-KTP --']]").click();
+  await fillIfExists(page.locator("//textarea[@name='id_address']"), "Jl. Tomang Raya Selatan no 12B");
+  await fillIfExists(page.locator("//input[@name='id_rt']"), "008");
+  await fillIfExists(page.locator("//input[@name='id_rt']"), "012");
+  await clickIfExists(page.locator("//div[p[text()='-- Select Provinsi E-KTP --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='DAERAH KHUSUS IBUKOTA JAKARTA']").click();
-  await page.locator("//div[p[text()='-- Select Kota/Kabupaten E-KTP --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='DAERAH KHUSUS IBUKOTA JAKARTA']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kota/Kabupaten E-KTP --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='JAKARTA UTARA']").click();
-  await page.locator("//div[p[text()='-- Select Kecamatan E-KTP --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='JAKARTA UTARA']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kecamatan E-KTP --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']").click();
-  await page.locator("//div[p[text()='-- Select Kelurahan E-KTP --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kelurahan E-KTP --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']"))
 
-  await page.locator("//textarea[@name='domicily_address']").fill("Jl. Tomang Raya Selatan no 12B");
-  await page.locator("//input[@name='domicily_rt']").fill("008");
-  await page.locator("//input[@name='domicily_rw']").fill("012");
+  await fillIfExists(page.locator("//textarea[@name='domicily_address']"), "Jl. Tomang Raya Selatan no 12B");
+  await fillIfExists(page.locator("//input[@name='domicily_rt']"), "008");
+  await fillIfExists(page.locator("//input[@name='domicily_rw']"), "012");
   await page.waitForTimeout(2000);
-  await page.locator("//div[p[text()='-- Select Provinsi Domisili --']]").click();
-  await page.locator("//li[@role='option' and normalize-space()='DAERAH KHUSUS IBUKOTA JAKARTA']").click();
-  await page.locator("//div[p[text()='-- Select Kota/Kabupaten Domisili --']]").click();
+  await clickIfExists(page.locator("//div[p[text()='-- Select Provinsi Domisili --']]"))
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='DAERAH KHUSUS IBUKOTA JAKARTA']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kota/Kabupaten Domisili --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='JAKARTA UTARA']").click();
-  await page.locator("//div[p[text()='-- Select Kecamatan Domisili --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='JAKARTA UTARA']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kecamatan Domisili --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']").click();
-  await page.locator("//div[p[text()='-- Select Kelurahan Domisili --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kelurahan Domisili --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']"))
 
-  await page.locator("//input[@type='text' and @name='nama_tercetak']").fill("Ini Nama Tercetak");
-  await page.locator("//input[@type='text' and @name='born_place']").fill("Jakarta");
-  await page.locator("//div[p[text()='-- Select Jenis Kelamin --']]").click();
+  await fillIfExists(page.locator("//input[@type='text' and @name='nama_tercetak']"), "Ini Nama Tercetak");
+  await fillIfExists(page.locator("//input[@type='text' and @name='born_place']"), "Jakarta");
+  await clickIfExists(page.locator("//div[p[text()='-- Select Jenis Kelamin --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='Laki-laki']").click();
-  await page.locator("//div[p[text()='-- Select Status Perkawinan --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='Laki-laki']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Status Perkawinan --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='Belum Kawin']").click();
-  await page.locator("//input[@name='mother_maiden_name']").fill("nama ibu Saya");
-  await page.locator("//input[@name='econtact_name']").fill("Nama Kontak darurat");
-  await page.locator("//input[@name='econtact_ponsel']").fill("087622348762"); 
-  await page.locator("(//input[@type='checkbox'])[3]").check();
-  await page.locator("//div[p[text()='-- Select Hubungan Kontak Darurat --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='Belum Kawin']"))
+  await fillIfExists(page.locator("//input[@name='mother_maiden_name']"), "nama ibu Saya");
+  await fillIfExists(page.locator("//input[@name='econtact_name']"), "Nama Kontak darurat");
+  await fillIfExists(page.locator("//input[@name='econtact_ponsel']"), "087622348762"); 
+  await checkCheckboxIfNotChecked(page.locator("(//input[@type='checkbox'])[3]"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Hubungan Kontak Darurat --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='Orang Tua']").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='Orang Tua']"))
 
   await page.locator("//button[span[text()='Simpan']]").click();
   await page.locator("//button[normalize-space()='OK']").click();
 
   //data pekerjaan
-  await page.locator("//input[@name='company_name']").fill("PT ABCD1234");
-  await page.locator("//input[@name='company_telp_number']").fill("PT ABCD1234");
-  await page.locator("//textarea[@name='office_address']").fill("JL. Alamat untuk PT ABCD1234");
-  await page.locator("//div[p[text()='-- Select Jenis Perusahaan --']]").click();
+  await fillIfExists(page.locator("//input[@name='company_name']"), "PT ABCD1234");
+  await fillIfExists(page.locator("//input[@name='company_telp_number']"), "PT ABCD1234");
+  await fillIfExists(page.locator("//textarea[@name='office_address']"), "JL. Alamat untuk PT ABCD1234");
+  await clickIfExists(page.locator("//div[p[text()='-- Select Jenis Perusahaan --']]"))
 await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='BUMN']").click();
-  await page.locator("//div[p[text()='-- Select Bidang Usaha Perusahaan --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='BUMN']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Bidang Usaha Perusahaan --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='PERUSAHAAN IT']").click(); 
-  await page.locator("//div[p[text()='-- Select Profesi --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='PERUSAHAAN IT']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Profesi --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='Pegawai Swasta']").click(); 
-  await page.locator("//div[p[text()='-- Select Provinsi Perusahaan --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='Pegawai Swasta']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Provinsi Perusahaan --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='DAERAH KHUSUS IBUKOTA JAKARTA']").click(); 
-  await page.locator("//div[p[text()='-- Select Kota/Kabupaten Perusahaan --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='DAERAH KHUSUS IBUKOTA JAKARTA']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kota/Kabupaten Perusahaan --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='JAKARTA UTARA']").click();
-  await page.locator("//div[p[text()='-- Select Kecamatan Perusahaan --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='JAKARTA UTARA']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kecamatan Perusahaan --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']").click();
-  await page.locator("//div[p[text()='-- Select Kelurahan Perusahaan --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Kelurahan Perusahaan --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']").click();
-  await page.locator("//div[p[text()='-- Select Jabatan --']]").click();
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='PENJARINGAN']"))
+  await clickIfExists(page.locator("//div[p[text()='-- Select Jabatan --']]"))
   await page.waitForTimeout(2000);
-  await page.locator("//li[@role='option' and normalize-space()='Staff/Karyawan']").click();
-  await page.locator("(//input[@type='text' and @inputmode='decimal'])[1]").fill('25000000');
-  await page.locator("(//input[@type='text' and @inputmode='decimal'])[2]").fill('25000000');
+  await clickIfExists(page.locator("//li[@role='option' and normalize-space()='Staff/Karyawan']"))
+  await fillIfExists(page.locator("(//input[@type='text' and @inputmode='decimal'])[1]"), '25000000');
+  await fillIfExists(page.locator("(//input[@type='text' and @inputmode='decimal'])[2]"), '25000000');
 
   await page.locator("//button[span[text()='Simpan']]").click();
   await page.locator("//button[normalize-space()='OK']").click();
