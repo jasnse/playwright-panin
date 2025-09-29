@@ -15,11 +15,11 @@ async function fillIfExists(locator: import('@playwright/test').Locator, value: 
 }
 
 async function checkCheckboxIfNotChecked(locator: import('@playwright/test').Locator) {
-  if (await locator.count() > 0) {          // Cek apakah element ada
-    if (!(await locator.isChecked())) {     // Cek apakah belum dicentang
-      await locator.check();                // Centang
+  if (await locator.count() > 0) {          
+    if (!(await locator.isChecked())) {     
+      await locator.check();                
     }
-    // Kalau sudah dicentang, otomatis dilewati
+  
   }
 }
 
@@ -57,6 +57,7 @@ await editButton.click();
   await page.locator("//button[normalize-space()='OK']").click();
 
   //Data Pemohon
+  await page.waitForTimeout(1000);
   await clickIfExists(page.locator("//div[p[text()='-- Select Pengiriman Kartu --']]"))
   await page.waitForTimeout(2000);
   await clickIfExists(page.locator("//li[@role='option' and normalize-space()='Alamat KTP']"))
@@ -120,6 +121,7 @@ await editButton.click();
   await page.locator("//button[normalize-space()='OK']").click();
 
   //data pekerjaan
+   await page.waitForTimeout(2000);
   await fillIfExists(page.locator("//input[@name='company_name']"), "PT ABCD1234");
   await fillIfExists(page.locator("//input[@name='company_telp_number']"), "PT ABCD1234");
   await fillIfExists(page.locator("//textarea[@name='office_address']"), "JL. Alamat untuk PT ABCD1234");
@@ -155,7 +157,7 @@ await page.waitForTimeout(2000);
 
   //upload dokumen
     const buttonUpload = page.locator("//button[@aria-label='upload']")
-
+ await page.waitForTimeout(2000);
   for(let i=0; i<10; i++) {
     if(i % 2 === 0) {
         await buttonUpload.nth(i).click();
@@ -172,6 +174,7 @@ await page.waitForTimeout(2000);
   await page.locator("//button[normalize-space(text())='Kartu Tambahan']").click();
 
   //Pelaporan Slik
+   await page.waitForTimeout(2000);
   await page.locator("//button[normalize-space(text())='Pelaporan SLIK']").click();
   await page.locator("//button[@type='button' and normalize-space(.//span[text()='Simpan & Isi Memo'])]").click();
   await page.locator("//button[normalize-space()='OK']").click();
@@ -183,6 +186,7 @@ await page.waitForTimeout(2000);
   await page.locator("//button[normalize-space(text())='SLA Kredit']").click();
   await page.locator("//button[@type='button' and normalize-space(.//span[text()='Selesai'])]").click();
   await page.locator("//button[normalize-space()='OK']").click();
+  
 
 
 

@@ -26,10 +26,13 @@ await page.goto('https://panin-ccpl-sites.skyworx.co.id/');
   await button.click();
 
   await page.locator("//button[h2[text()='Distribusi Tugas DCP']]").click();
+
   const isChecked = await page.locator("(//input[@type='checkbox'])[2]").isChecked();
   if (!isChecked) {
-  await page.locator("(//input[@type='checkbox'])[2]").check();
+  //await page.locator("(//input[@type='checkbox'])[2]").check();
+  await page.locator("(//input[@type='checkbox'])[2]").click({ force: true });
 }
+
   await page.locator("//button[contains(text(), 'Distribusi')]").click();
   await page.locator("//input[@role='combobox']").click();
   await page.locator("//li[@role='option' and normalize-space()='SALESDCP STAFF SKY 002']").click();
